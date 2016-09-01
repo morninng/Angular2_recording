@@ -22,7 +22,7 @@ export class WorkerComponent implements OnInit {
 
   audio_context
 
-  constructor( record_mp3: RecordMp3Service) {
+  constructor( private record_mp3: RecordMp3Service) {
 
     console.log("worker component constructor");
 
@@ -40,7 +40,8 @@ export class WorkerComponent implements OnInit {
       (stream)=>{
         console.log("stream start");
         const input = this.audio_context.createMediaStreamSource(stream);
-    //    record_mp3.update_setting(input, {aa:"bb"})
+        record_mp3.update_setting(input, {numChannels: 1})
+
 
 
       },
@@ -65,6 +66,7 @@ export class WorkerComponent implements OnInit {
 
   startRecording = ()=>{
     console.log("start recording");
+    this.record_mp3.start_record();
   }
 
   stopRecording = ()=>{

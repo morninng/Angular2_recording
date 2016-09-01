@@ -1,3 +1,9 @@
+self.onmessage = function(e){
+	console.log(e);
+}
+
+
+
 /*importScripts('libmp3lame.min.js');
 
 var mp3codec;
