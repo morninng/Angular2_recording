@@ -1,8 +1,13 @@
 <p>
   worker works!
 </p>
+
+<span *ngIf="audio_enabled">
+
   <button type="button" class="btn" [ngClass]="{'btn-primary': recordable, 'btn-default':!recordable, 'disabled':!recordable }"  (click)="startRecording()">record</button>
   <button type="button" class="btn" [ngClass]="{'btn-primary': recording, 'btn-default':recordable, 'disabled':!recording }" (click)="stopRecording()">stop</button>
+
+</span>
 
 <span *ngIf="audio_exist">
 
@@ -12,3 +17,8 @@
 
 </span>
 
+<input type="button" (click)="update_data()"  value="update_data">
+
+{{text_data}}
+--
+{{text_data2}}
