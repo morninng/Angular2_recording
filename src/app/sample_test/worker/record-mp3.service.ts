@@ -21,6 +21,7 @@ export class RecordMp3Service {
     console.log("record mp3");
   }
 
+
   update_setting(source : any, cfg : any){
 
     console.log(cfg);
@@ -67,13 +68,11 @@ export class RecordMp3Service {
         break;
       }
     }
-    
   }
 
 
   private link_audio_data(audio_buf){
 
-    
   }
 
   start_record(){
@@ -95,6 +94,5 @@ export class RecordMp3Service {
   exportWAV(cb, type){
       this.recorder_worker.postMessage({command: 'exportWAV',type: type});
   }
-
 
 }

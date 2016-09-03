@@ -2,6 +2,7 @@ import { Component, OnInit, provide, ChangeDetectorRef, ChangeDetectionStrategy,
 import {RecordMp3Service} from './record-mp3.service';
 import {NgClass} from '@angular/common';
 import { Subject } from 'rxjs/Rx';
+import {SafeResourceUrl, DomSanitizationService } from '@angular/platform-browser';
 
 //import {Window} from './window';
 //import {Navigator} from './navigator';
@@ -19,8 +20,7 @@ declare var navigator:any;
   templateUrl: './worker.component.html',
   styleUrls: ['./worker.component.css'],
   providers: [RecordMp3Service],
-  directives: [NgClass],
-  changeDetection: ChangeDetectionStrategy.Default
+  directives: [NgClass]
 })
 export class WorkerComponent implements OnInit {
 
@@ -28,28 +28,16 @@ export class WorkerComponent implements OnInit {
   recordable : boolean;
   recording : boolean;
   audio_exist : boolean = false;
-  audio_src : string;
+  audio_src : SafeResourceUrl;
   audio_enabled : boolean;
-  text_data : string = "111";
-  text_data2 : string = "sss";
   audio_context: any;
 
-  constructor( private record_mp3: RecordMp3Service, private ref: ChangeDetectorRef, private _ngZone: NgZone) {
-
-    this.text_data = "222";
-
-    const that = this;
-
+  constructor( private record_mp3: RecordMp3Service, private _ngZone: NgZone, private sanitizer: DomSanitizationService) {
 
   }
 
 
-
-
-
   ngOnInit() {
-
-
 
       window.AudioContext = window.AudioContext || window.webkitAudioContext;
       navigator.getUserMedia = ( navigator.getUserMedia ||
@@ -70,13 +58,14 @@ export class WorkerComponent implements OnInit {
 // http://www.gcgate.jp/engineerblog/2014/03/28/874/
       this.record_mp3.audio_source$.subscribe(
         (audio_blob)=>{
-          const audio_src = window.URL.createObjectURL(audio_blob);
-          this.audio_src = audio_src
-          this.audio_exist = true;
-          console.log("audio recorded");
+          this._ngZone.run(()=>{
+            const audio_src = window.URL.createObjectURL(audio_blob);
+            this.audio_src = this.sanitizer.bypassSecurityTrustResourceUrl( audio_src);
+            this.audio_exist = true;
+            console.log("audio source", audio_src);
+          });
         }
       )
-
 
     this.recordable = true;
     this.recording = false;
@@ -89,27 +78,9 @@ export class WorkerComponent implements OnInit {
       this.record_mp3.update_setting(input, {numChannels: 1}) 
 
       this._ngZone.run(()=>{
-        console.log(this);
         this.audio_enabled = true;
-        this.text_data = "444";
       })
-  
-      //this.ref.markForCheck();
-
   }
-
-
-
-  update_data = ()=>{
-    this.text_data2 = "777";
-  }
-
-/*
-  test_test(){
-    this.that.text_data = "666"
-  }
-  */
-
 
   startRecording = ()=>{
     console.log("start recording");
@@ -125,6 +96,4 @@ export class WorkerComponent implements OnInit {
     this.recordable = true;
   }
 
-
 }
-

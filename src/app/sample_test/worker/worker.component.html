@@ -12,13 +12,7 @@
 <span *ngIf="audio_exist">
 
   <audio controls="controls">
-    <source src="{{audio_src}}" type="audio/wav">
+    <source [src]="audio_src" type="audio/wav">
   </audio>
 
 </span>
-
-<input type="button" (click)="update_data()"  value="update_data">
-
-{{text_data}}
---
-{{text_data2}}
