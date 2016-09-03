@@ -1,11 +1,14 @@
-
 <p>
   worker works!
 </p>
+  <button type="button" class="btn" [ngClass]="{'btn-primary': recordable, 'btn-default':!recordable, 'disabled':!recordable }"  (click)="startRecording()">record</button>
+  <button type="button" class="btn" [ngClass]="{'btn-primary': recording, 'btn-default':recordable, 'disabled':!recording }" (click)="stopRecording()">stop</button>
 
-aa
+<span *ngIf="audio_exist">
 
+  <audio controls="controls">
+    <source src="{{audio_src}}" type="audio/wav">
+  </audio>
 
-  <button (click)="startRecording();">record</button>
-  <button (click)="stopRecording();" disabled>stop</button>
+</span>
 

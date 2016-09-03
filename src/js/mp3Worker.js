@@ -1,7 +1,10 @@
+
+importScripts('./libmp3lame.min.js');
+
 self.onmessage = function(e){
 	console.log(e);
+	mp3codec = Lame.init();
 }
-
 
 
 /*importScripts('libmp3lame.min.js');

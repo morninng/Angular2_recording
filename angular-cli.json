@@ -17,7 +17,7 @@
       "styles": [
         "styles.css"
       ],
-      "scripts": ["./js/mp3Worker.js","./js/libmp3lame.min.js","./js/recorderWorker.js"],
+      "scripts": ["./js/mp3Worker.js","./js/recorderWorker.js"],
       "environments": {
         "source": "environments/environment.ts",
         "prod": "environments/environment.prod.ts",
