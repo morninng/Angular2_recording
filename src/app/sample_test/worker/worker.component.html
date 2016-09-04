@@ -16,3 +16,23 @@
   </audio>
 
 </span>
+
+
+
+<ul>
+  <li *ngFor="let transcript of transcript_sentence_arr | async">
+    <span *ngIf="!transcript.edit">
+      {{transcript.sentence}} <input type="button" value="edit sentence" (click)="start_edit(transcript.id)">
+    </span>
+    <span *ngIf="transcript.edit">
+      {{transcript.sentence}}
+      <input [value]="transcript.sentence" #new_sentence >
+      <input type="button" value="update" (click)="update_sentence(transcript.id, new_sentence.value)">
+    </span>
+  </li>
+</ul>
+
+
+<input type = "button" value="put dummy data" (click)="put_dummy_transcription()">
+<input type="button" value="add_transcript_data" (click)="add_transcript_data()">
+

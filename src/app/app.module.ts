@@ -6,7 +6,9 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { WorkerComponent } from './sample_test/worker/worker.component';
 
-
+import { Store, StoreModule } from '@ngrx/store';
+import {TranscriptionReducer} from './transcription-reducer';
+import {ActionCreatorService} from './action-creator.service'
 
 
 @NgModule({
@@ -17,9 +19,11 @@ import { WorkerComponent } from './sample_test/worker/worker.component';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    StoreModule.provideStore({  transcript: TranscriptionReducer }, {  transcript: [] })
   ],
-  providers: [],
+  providers: [ActionCreatorService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+

@@ -2,7 +2,7 @@
 
 import { TestBed, async, inject } from '@angular/core/testing';
 import { RecordMp3Service } from './record-mp3.service';
-
+/*
 describe('Service: RecordMp3', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -14,3 +14,5 @@ describe('Service: RecordMp3', () => {
     expect(service).toBeTruthy();
   }));
 });
+
+*/
