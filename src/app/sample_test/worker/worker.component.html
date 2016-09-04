@@ -9,24 +9,29 @@
 
 </span>
 
-<span *ngIf="audio_exist">
 
+<!--
   <audio controls="controls">
     <source [src]="audio_src" type="audio/wav">
   </audio>
+-->
+  
 
-</span>
-
+  <span id="audio_player"></span>
 
 
 <ul>
   <li *ngFor="let transcript of transcript_sentence_arr | async">
     <span *ngIf="!transcript.edit">
-      {{transcript.sentence}} <input type="button" value="edit sentence" (click)="start_edit(transcript.id)">
+      <span [ngClass]="{'red_font': transcript.playing}">
+      {{transcript.sentence}}
+      </span>
+        <input type="button" value="edit sentence" (click)="start_edit(transcript.id)">
     </span>
     <span *ngIf="transcript.edit">
-      {{transcript.sentence}}
-      <input [value]="transcript.sentence" #new_sentence >
+      <span [ngClass]="{'red_font': transcript.playing}">
+        <input [value]="transcript.sentence" #new_sentence >
+      </span>
       <input type="button" value="update" (click)="update_sentence(transcript.id, new_sentence.value)">
     </span>
   </li>

@@ -36,7 +36,6 @@ export class WorkerComponent implements OnInit {
 
   recordable : boolean;
   recording : boolean;
-  audio_exist : boolean = false;
   audio_src : SafeResourceUrl;
   audio_enabled : boolean;
   audio_context: any;
@@ -77,10 +76,8 @@ export class WorkerComponent implements OnInit {
       this.record_mp3.audio_source$.subscribe(
         (audio_blob)=>{
           this._ngZone.run(()=>{
-            const audio_src = window.URL.createObjectURL(audio_blob);
-            this.audio_src = this.sanitizer.bypassSecurityTrustResourceUrl( audio_src);
-            this.audio_exist = true;
-            console.log("audio source", audio_src);
+
+            this.create_audio(audio_blob);
             this.show_transcription();
           });
         }
@@ -90,6 +87,48 @@ export class WorkerComponent implements OnInit {
   show_transcription(){
     this.transcript_sentence_arr = this.store.select('transcript');
   }
+
+  create_audio(audio_blob){
+      const audio_src = window.URL.createObjectURL(audio_blob);
+      const santized_audio_src = this.sanitizer.bypassSecurityTrustResourceUrl( audio_src);
+
+
+      const audio_element = new Audio();
+      audio_element.controls = true;
+      audio_element.src = audio_src;
+      audio_element.addEventListener("play", ()=>{ this.Audio_Time_update("play", audio_element.currentTime)});
+      audio_element.addEventListener("seeked", ()=>{ this.Audio_Time_update("seek", audio_element.currentTime)});
+      audio_element.addEventListener("timeupdate", ()=>{ this.Audio_Time_update("time_update", audio_element.currentTime)});
+      const audio_container_element = document.getElementById("audio_player");
+      audio_container_element.insertBefore(audio_element, null);
+
+  }
+
+  prev_updated_time = 0;
+  
+  Audio_Time_update(type, current_time){
+
+      console.log(current_time);
+      current_time = current_time * 1000;
+
+      if(type=="time_update"){
+        var duration = current_time - this.prev_updated_time;
+        console.log("duration " + duration);
+        if(duration > 0.5){
+          const obj = this.action_creator.transcription_play(current_time);
+          this.store.dispatch(obj);
+        }
+      }else if (type=="seek"){
+          const obj = this.action_creator.transcription_play(current_time);
+          this.store.dispatch(obj);
+      }else if (type=="play"){
+          const obj = this.action_creator.transcription_play(0);
+          this.store.dispatch(obj);
+
+      }
+
+  }
+  
 
   callback_getusermedia = (stream) => {
       console.log("stream start");

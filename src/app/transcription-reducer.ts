@@ -7,7 +7,7 @@ export const UPDATE_SENTENCE = 'UPDATE_SENTENCE';
 export const RESET_SENTENCE = 'RESET_SENTENCE';
 export const UPDATE_TIME = 'UPDATE_TIME';
 export const EDIT_ITEM_STATUS = 'EDIT_ITEM_STATUS';
-
+export const PLAY_AUDIO = 'PLAY_AUDIO';
 
 export const TranscriptionReducer: ActionReducer<any> = (state = [], action: Action) => {
 
@@ -40,7 +40,18 @@ export const TranscriptionReducer: ActionReducer<any> = (state = [], action: Act
                 }else{
                     return Object.assign({}, transcript);
                 }
-            })    
+            })
+
+        case PLAY_AUDIO:
+            let already_found = false;
+            return state.map((each_state)=>{
+                each_state.playing = false;
+               if(!already_found && action.payload.current_time <each_state.end_time){
+                    each_state.playing = true;
+                    already_found = true;
+                }
+                return each_state
+            })
 
         case RESET_SENTENCE:
             state = []

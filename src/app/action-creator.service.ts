@@ -1,4 +1,4 @@
-import {ADD_SENTENCE,UPDATE_SENTENCE,RESET_SENTENCE,UPDATE_TIME, EDIT_ITEM_STATUS } from "./transcription-reducer";
+import {ADD_SENTENCE,UPDATE_SENTENCE,RESET_SENTENCE,UPDATE_TIME, EDIT_ITEM_STATUS, PLAY_AUDIO } from "./transcription-reducer";
 
 
 
@@ -43,8 +43,6 @@ export class ActionCreatorService {
     return action_obj;
   }
 
-
-
   transcription_editstatus(id){
     const action_obj = {
       type:EDIT_ITEM_STATUS,
@@ -55,7 +53,15 @@ export class ActionCreatorService {
     return action_obj;
   }
 
-
+  transcription_play(current_time){
+     const action_obj = {
+      type:PLAY_AUDIO,
+      payload: {
+        current_time
+      }
+    }
+    return action_obj;   
+  }
 
 
   private generate_id(){
