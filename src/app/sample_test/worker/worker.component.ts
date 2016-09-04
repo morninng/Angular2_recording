@@ -1,5 +1,5 @@
 import { Component, OnInit, provide, ChangeDetectorRef, ChangeDetectionStrategy, NgZone } from '@angular/core';
-import {RecordMp3Service} from './record-mp3.service';
+import {RecordWAVService} from './record-wav.service';
 import {SpeechRecognitionService} from './speech-recognition.service'
 import {NgClass} from '@angular/common';
 import { Subject, Observable } from 'rxjs/Rx';
@@ -26,7 +26,7 @@ declare var navigator:any;
   selector: 'app-worker',
   templateUrl: './worker.component.html',
   styleUrls: ['./worker.component.css'],
-  providers: [RecordMp3Service, SpeechRecognitionService],
+  providers: [RecordWAVService, SpeechRecognitionService],
   directives: [NgClass]
 })
 
@@ -41,7 +41,7 @@ export class WorkerComponent implements OnInit {
   audio_context: any;
   transcript_sentence_arr : Observable<any>;
 
-  constructor( private record_mp3: RecordMp3Service,
+  constructor( private record_wav: RecordWAVService,
               private speech_recog: SpeechRecognitionService ,
               private _ngZone: NgZone, 
               private sanitizer: DomSanitizationService,
@@ -73,7 +73,7 @@ export class WorkerComponent implements OnInit {
       );
 
 // http://www.gcgate.jp/engineerblog/2014/03/28/874/
-      this.record_mp3.audio_source$.subscribe(
+      this.record_wav.audio_source$.subscribe(
         (audio_blob)=>{
           this._ngZone.run(()=>{
 
@@ -133,7 +133,7 @@ export class WorkerComponent implements OnInit {
   callback_getusermedia = (stream) => {
       console.log("stream start");
       const input = this.audio_context.createMediaStreamSource(stream);
-      this.record_mp3.update_setting(input, {numChannels: 1}) 
+      this.record_wav.update_setting(input, {numChannels: 1}) 
 
       this._ngZone.run(()=>{
         this.audio_enabled = true;
@@ -149,7 +149,7 @@ export class WorkerComponent implements OnInit {
 
   startRecording = ()=>{
     console.log("start recording");
-    this.record_mp3.start_record();
+    this.record_wav.start_record();
     this.recording = true;
     this.recordable = false;
     this.speech_recog.start_recognition();
@@ -157,7 +157,7 @@ export class WorkerComponent implements OnInit {
 
   stopRecording = ()=>{
     console.log("stop recording");
-    this.record_mp3.stop_record();
+    this.record_wav.stop_record();
     this.recording = false;
     this.recordable = true;
     this.speech_recog.stop_recognition();
