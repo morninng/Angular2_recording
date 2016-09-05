@@ -17,10 +17,13 @@ export class SpeechRecognitionService {
   speech_start_time: any;
 
   constructor(public store: Store<any>, public action_creator :ActionCreatorService) {
+    console.log("recognition initialization");
     if(!window.webkitSpeechRecognition){
       this.available = false;
+      console.log("recognition is not available");
       return;
     }
+    console.log("recognition is available");
     this.recognition = new window.webkitSpeechRecognition();
     this.recognition.continuous = true;
     this.recognition.lang = "en-US";
@@ -69,7 +72,6 @@ export class SpeechRecognitionService {
       this.store.dispatch(obj_2);
       const obj_3 = this.action_creator.transcription_addsentence("ccc", 3000);
       this.store.dispatch(obj_3);
-
     }
 
     add_transcript_data(){

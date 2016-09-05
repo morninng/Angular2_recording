@@ -5,7 +5,11 @@
 <span *ngIf="audio_enabled">
 
   <button type="button" class="btn" [ngClass]="{'btn-primary': recordable, 'btn-default':!recordable, 'disabled':!recordable }"  (click)="startRecording()">record</button>
-  <button type="button" class="btn" [ngClass]="{'btn-primary': recording, 'btn-default':recordable, 'disabled':!recording }" (click)="stopRecording()">stop</button>
+  <button type="button" class="btn" [ngClass]="{'btn-primary': under_recording, 'btn-default':recordable, 'disabled':!under_recording }" (click)="stopRecording()">stop</button>
+
+  <span *ngIf="under_recording">
+    <img src="./assets/recording_small_compressed.gif">
+  </span>
 
 </span>
 
@@ -26,18 +30,34 @@
       <span [ngClass]="{'red_font': transcript.playing}">
       {{transcript.sentence}}
       </span>
-        <input type="button" value="edit sentence" (click)="start_edit(transcript.id)">
+        <input type="button" value="edit sentence" (click)="edit_each_sentence(transcript.id)">
     </span>
     <span *ngIf="transcript.edit">
       <span [ngClass]="{'red_font': transcript.playing}">
         <input [value]="transcript.sentence" #new_sentence >
       </span>
-      <input type="button" value="update" (click)="update_sentence(transcript.id, new_sentence.value)">
+      <input type="button" value="update" (click)="update_each_sentence(transcript.id, new_sentence.value)">
     </span>
   </li>
 </ul>
 
 
+
+<!---
 <input type = "button" value="put dummy data" (click)="put_dummy_transcription()">
 <input type="button" value="add_transcript_data" (click)="add_transcript_data()">
+-->
 
+<br>
+<br>
+<input type="button" value="upload_file" (click)="upload_file()">
+
+<span *ngIf="under_encoding">
+  <img src="./assets/horizontal_loader.gif">
+</span>
+<span *ngIf="under_uploading">
+  <img src="./assets/google-loading-icon.gif">
+</span>
+
+
+<span id="uploaded_audio"></span>

@@ -6,12 +6,15 @@ var recLength = 0,
 this.onmessage = function(e){
   switch(e.data.command){
     case 'init':
+      console.log("recorder worker onmessage init");
       init(e.data.config);
       break;
     case 'record':
+      console.log("recorder worker onmessage record");
       record(e.data.buffer);
       break;
     case 'exportWAV':
+      console.log("recorder worker onmessage export wav");
       exportWAV(e.data.type);
       break;
     case 'getBuffer':

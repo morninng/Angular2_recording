@@ -18,7 +18,7 @@ export class RecordWAVService {
 
 
   constructor() { 
-    console.log("record mp3");
+    console.log("record wav service");
   }
 
 
@@ -61,7 +61,7 @@ export class RecordWAVService {
       console.log("recorder worker onmessage", e);
       switch(e.data.command){
         case 'record_done':
-          console.log("record done in recorder mp3 service");
+          console.log("record done in recorder wav service");
           let audio_blob = e.data.audio_blob;
           this.audio_source$.next(audio_blob);
           this.recorder_worker.postMessage({ command: 'clear' });
@@ -71,12 +71,9 @@ export class RecordWAVService {
   }
 
 
-  private link_audio_data(audio_buf){
-
-  }
 
   start_record(){
-    console.log("start record is called in recorder-mp3 service");
+    console.log("start record is called in recorder-wav service");
     this.recording = true;
   }
 
